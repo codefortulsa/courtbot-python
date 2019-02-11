@@ -1,0 +1,4 @@
+Django==2.1.5
+oscn==0.0.0.32
+python-decouple==3.1
+twilio==6.24.0
