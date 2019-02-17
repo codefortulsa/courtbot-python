@@ -1,3 +1,10 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Alert
+
+
+class AlertAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(Alert, AlertAdmin)
