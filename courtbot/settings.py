@@ -29,7 +29,7 @@ SECRET_KEY = config('SECRET_KEY', default='unsafe-secret-key-for-dev')
 DEBUG = config('DJANGO_DEBUG', default=False)
 
 ALLOWED_HOSTS = [
-    "55cf788a.ngrok.io"
+    "29f0c384.ngrok.io"
 ]
 
 
@@ -42,6 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'phonenumber_field',
+
+    'alerts',
 ]
 
 MIDDLEWARE = [
