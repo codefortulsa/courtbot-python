@@ -6,10 +6,10 @@ as part of the 'OrderFlowers' template.
 
 For instructions on how to set up and test this bot, as well as additional samples,
 visit the Lex Getting Started documentation http://docs.aws.amazon.com/lex/latest/dg/getting-started.html.
+
+20190604 : seyeon : Initial validations for year, county, and case number
 """
-import math
 import dateutil.parser
-import datetime
 import time
 import os
 import logging
@@ -92,36 +92,62 @@ def isvalid_date(date):
     except ValueError:
         return False
 
+def validate_eligible_county(county):
+    counties = ['Tulsa', 'Rogers', 'Muskogee']
+    normalized_counties = []
+    for eligible_county in counties:
+        normalized_counties.append(eligible_county.lower())
+    if county is not None and county.lower() not in normalized_counties:
+        eligible_counties = ', '.join(str(c) for c in counties)
+        message = ('We do not have {0} as a serviceable area, '
+                   'would you like to look up case from one of our eligible '
+                   'counties? Counties we currently service are: {1}'.format(
+                        county, eligible_counties))
+        return False, 'County', message
+    return True, None, None
 
-def validate_order_flowers(flower_type, date, pickup_time):
-    flower_types = ['lilies', 'roses', 'tulips']
-    if flower_type is not None and flower_type.lower() not in flower_types:
-        return build_validation_result(False,
-                                       'FlowerType',
-                                       'We do not have {}, would you like a different type of flower?  '
-                                       'Our most popular flowers are roses'.format(flower_type))
+def validate_year(year):
+    message = None
+    year_range = 5
+    valid_year = 0
+    try:
+        valid_year = int(year)
+    except ValueError:
+        message = ('Please enter the year as a 4 digit number, such as 2019. '
+                   'What year is the case in?')
+        return False, 'Year', message
+    if len(year) != 4:
+        message = ('Please enter the year as a 4 digit number, such as 2019. '
+                   'What year is the case in?')
+        return False, 'Year', message
+    if abs(valid_year - 2019) > year_range:
+        # range in which cases are searchable
+        message = ('Unfortunately we cannot look up cases older or later than '
+                   '{0} years. Would you like to look up a case between the '
+                   '{0} years in the past or future?'.format(year_range))
+        return False, 'Year', message
+    return True, None, message
 
-    if date is not None:
-        if not isvalid_date(date):
-            return build_validation_result(False, 'PickupDate', 'I did not understand that, what date would you like to pick the flowers up?')
-        elif datetime.datetime.strptime(date, '%Y-%m-%d').date() <= datetime.date.today():
-            return build_validation_result(False, 'PickupDate', 'You can pick up the flowers from tomorrow onwards.  What day would you like to pick them up?')
+def validate_case_number(case_number):
+    # call the endpoint for validating case number
+    message = None
+    return True, None, message
 
-    if pickup_time is not None:
-        if len(pickup_time) != 5:
-            # Not a valid time; use a prompt defined on the build-time model.
-            return build_validation_result(False, 'PickupTime', None)
 
-        hour, minute = pickup_time.split(':')
-        hour = parse_int(hour)
-        minute = parse_int(minute)
-        if math.isnan(hour) or math.isnan(minute):
-            # Not a valid time; use a prompt defined on the build-time model.
-            return build_validation_result(False, 'PickupTime', None)
+def validate_case_info(county, year, case_number):
+    is_valid, slot, message = validate_eligible_county(county)
+    if not is_valid:
+        return build_validation_result(is_valid, slot, message)
 
-        if hour < 10 or hour > 16:
-            # Outside of business hours
-            return build_validation_result(False, 'PickupTime', 'Our business hours are from ten a m. to five p m. Can you specify a time during this range?')
+    if year is not None:
+        is_valid, slot, message = validate_year(year)
+        if not is_valid:
+            return build_validation_result(is_valid, slot, message)
+
+    if case_number is not None:
+        is_valid, slot, message = validate_case_number(case_number)
+        if not is_valid:
+            return build_validation_result(is_valid, slot, message)
 
     return build_validation_result(True, None, None)
 
@@ -129,16 +155,16 @@ def validate_order_flowers(flower_type, date, pickup_time):
 """ --- Functions that control the bot's behavior --- """
 
 
-def order_flowers(intent_request):
+def get_case_info(intent_request):
     """
     Performs dialog management and fulfillment for ordering flowers.
     Beyond fulfillment, the implementation of this intent demonstrates the use of the elicitSlot dialog action
     in slot validation and re-prompting.
     """
 
-    flower_type = get_slots(intent_request)["FlowerType"]
-    date = get_slots(intent_request)["PickupDate"]
-    pickup_time = get_slots(intent_request)["PickupTime"]
+    county = get_slots(intent_request)["County"]
+    year = get_slots(intent_request)["Year"]
+    case_number = get_slots(intent_request)["CaseID"]
     source = intent_request['invocationSource']
 
     if source == 'DialogCodeHook':
@@ -146,7 +172,7 @@ def order_flowers(intent_request):
         # Use the elicitSlot dialog action to re-prompt for the first violation detected.
         slots = get_slots(intent_request)
 
-        validation_result = validate_order_flowers(flower_type, date, pickup_time)
+        validation_result = validate_case_info(county, year, case_number)
         if not validation_result['isValid']:
             slots[validation_result['violatedSlot']] = None
             return elicit_slot(intent_request['sessionAttributes'],
@@ -158,17 +184,19 @@ def order_flowers(intent_request):
         # Pass the price of the flowers back through session attributes to be used in various prompts defined
         # on the bot model.
         output_session_attributes = intent_request['sessionAttributes'] if intent_request['sessionAttributes'] is not None else {}
-        if flower_type is not None:
-            output_session_attributes['Price'] = len(flower_type) * 5  # Elegant pricing model
+        if case_number is not None:
+            output_session_attributes['CaseID'] = case_number
 
         return delegate(output_session_attributes, get_slots(intent_request))
 
     # Order the flowers, and rely on the goodbye message of the bot to define the message to the end user.
     # In a real bot, this would likely involve a call to a backend service.
+    success_message = ('Thank you for using Courtbot. '
+                       'For any comments or concerns contact us at '
+                       'https://www.okcourtbot.com/#faq')
     return close(intent_request['sessionAttributes'],
                  'Fulfilled',
-                 {'contentType': 'PlainText',
-                  'content': 'Thanks, your order for {} has been placed and will be ready for pickup by {} on {}'.format(flower_type, pickup_time, date)})
+                 {'contentType': 'PlainText', 'content': success_message})
 
 
 """ --- Intents --- """
@@ -184,8 +212,8 @@ def dispatch(intent_request):
     intent_name = intent_request['currentIntent']['name']
 
     # Dispatch to your bot's intent handlers
-    if intent_name == 'OrderFlowers':
-        return order_flowers(intent_request)
+    if intent_name == 'GetCaseInfo':
+        return get_case_info(intent_request)
 
     raise Exception('Intent with name ' + intent_name + ' not supported')
 

@@ -1,5 +1,17 @@
 language: python
 python:
-    - "3.6"
+- '3.6'
 script:
-    - python manage.py test
+- python manage.py test
+deploy:
+  on:
+    branch: production
+  provider: lambda
+  function_name: lambda_function
+  region: us-west-2
+  role: arn:aws:lambda:us-west-2:147768536717:function:GetCaseInfoHook
+  runtime: python3.7
+  handler_name: lambdas.lex_lambda.lambda_handler
+  access_key_id: AKIASEZ5Q52G6YKVITMQ
+  secret_access_key:
+    secure: WVVUU/9mbwjS5KSBqNHmU0e/Fc/zk4TSiouLot8HiTCBN9gmgFvxg3ivuWKy5tMMV09hXW/QRWPPOcs0wNsD8PZRk4Vm+YJehU3zRM7mLhDw3gPYjWZiNk9geqhOkAzG31HBys3Up8QJHeGxn83NRc76SCpjtREOvmLzzlWBqjlsTYX/MOocD4hf+69VeDEmxwt5pUl2A5PxPiuiMUjpZ2XgZQeCbkn0uLGsvzKKHN0xxlc8ij5JYuj/f6E7DZNNdXLYZ7yjRtjBlRIAc8zyUuq/0tZspQae+lIkq21n50Xmoew8q/oxKWDthi63JciRCh+QtvJu1/eHqnJwCbbxqg4k9GL/Xy3OEPGInPPIp1BrPqsyuDbqsrHZ+9m/qW4SRr6uE29ndogimd7eSdTPUo8hdrrr+Y9opihKpeWOAaRkpEBaf9waMpR2Q5RfXrGPBGPbH8NPu0OPhRT1yD2axF7pvHQlgxkuVSeYxCEvKSevwCmB8RijvGFbRc2djJCSNC8FVGUwbjVhCwBXAoIHN8S6CKYPND/0SEYkHF8x8OU/culOfEge3c7MSSoPKDlopIQm9sVA2FZEI+6MkIMfQvz2KyGNZhtnIvxLjyudqTE96HRvUldH0kiREDHIj2eyqzllq8XHxVE7gXGoD+lXrbFE4UT6mTypej5t7ZEfDjQ=
