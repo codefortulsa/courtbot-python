@@ -22,4 +22,5 @@ localhost:8000 ...
 comes in" webhook. E.g., http://34ae567a.ngrok.io/sms/twilio
 
 Note: super annoying, but every time you restart ngrok you'll have to update
-your twilio number's messaging webhook again. Unless you pay for ngrok.
+your twilio number's messaging webhook again, and you'll need to change your
+`ALLOWED_HOSTS` to include the new ngrok host.  Unless you pay for ngrok.
