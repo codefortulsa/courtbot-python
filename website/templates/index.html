@@ -2,7 +2,99 @@
 
 {% block content %}
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+<div class="jumbotron bright-yellow-bkg">
+	<div class="container text-center">
+		<h1 class="display-1">Get Court Date Reminders</h1>
+		<p class="display-2">Text your OSCN Case Number:</p>
+		<div class="row">
+			<div class="col-sm-4 display-3">Muskogee <br />County<br /><a class="btn btn-lg btn-yellow" style="font-size:20px" href="sms:9186080060">(918)-608-0060</a></div>
+			<div class="col-sm-4 display-3">Rogers <br />County<br /><a class="btn btn-lg btn-yellow" style="font-size:20px" href="sms:9182059352">(918)-205-9352</a></div>
+			<div class="col-sm-4 display-3">Tulsa <br />County<br /><a class="btn btn-lg btn-yellow" style="font-size:20px" href="sms:9189923222">(918)-992-3222</a></div>
+		</div>
+		<p class="Lead">
+			County is based on the county of your court case.
+		</p>
+	</div>
+</div>
+<!--What is CourtBot-->
 
+<div class="container text-center" id="whatIsCourtBot">
+	<main>
+		<h2>What is CourtBot?</h2>
+		<p class="lead">COURTBOT is a text-message app that helps keep everything on track. After cases are booked, clients can text their case number to COURTBOT to receive automatic reminders of court dates. Research shows that reminders work.</p>
+	</main>
+</div>
+
+<!--Why CourtBot-->
+<section id="about" class="CBLtBgClr">
+	<div class="container text-center" id="whyCourtBot">
+		<h2>Why CourtBot?</h2>
+		<article>
+
+			<br>
+			<h4>LESS BUREAUCRACY</h4>
+			<p class="lead">Around 25% of the people in Tulsa County Jail are waiting for their cases to be heard, costing taxpayers up to $25,000 per day. When clients attend their court cases, more small fines are collected, and jail space is freed for more
+				serious offenders. Remembering to attend court can help break the cycle of fines and jail time.
+			</p>
+		</article>
+		<br>
+		<article>
+			<h4>FEWER FINES</h4>
+			<p class="lead">Failure-to-appear and failure-to-pay fines can quickly snowball, especially for those living paycheck-to-paycheck. CourtBot helps clients avoid mistakes that burden them and the criminal justice system. Government done well can
+				help.</p>
+		</article>
+	</div>
+</section>
+<!--FAQs-->
+<section id="faq">
+	<div class="container">
+		<h2 class="center">Frequently Asked Questions</h2>
+		<br>
+		<div class="row">
+			<div class="col-sm-6">
+				<h4>1. How do I know my OSCN Case Number?</h4>
+				<p>It starts with CF, CM, CRF or CRM and has two dashes.</p>
+			</div>
+			<div class="col-sm-6">
+				<h4>2. What if I still can't find my case number?</h4>
+				<p>Check with your public defender or search your name online at <a href=“www.oscn.net/docets/search.aspx”>www.oscn.net/docets/search.aspx </a> </p> </div> <div class="col-sm-6">
+						<h4>3. Can other people be reminded of my court date?</h4>
+						<p>Anyone with your case number will be able to use courtbot to keep track of your court date.</p>
+			</div>
+			<div class="col-sm-6">
+				<h4>4. How will my information be used?</h4>
+				<p>Your case information will be pulled into Courtbot's database to be used as a reference for your reminders</p>
+			</div>
+			<div class="col-sm-6">
+				<h4>5. When will I be reminded of my court case?</h4>
+				<p>Currently, a notification will be sent the day before you case.</p>
+			</div>
+			<div class="col-sm-6">
+				<h4>6. How often will I be reminded?</h4>
+				<p>Currently, you will only be reminded once.</p>
+			</div>
+			<div class="col-sm-6">
+				<h4>7. How do I unsubscribe?</h4>
+				<p></p>
+			</div>
+			<div class="col-sm-6">
+				<h4>8. How do I contact the people behind CourtBot?</h4>
+				<p>You can contact us at <a href="mailto:courtbotmuskogee@gmail.com">courtbotmuskogee@gmail.com.</a></p>
+			</div>
+		</div>
+	</div>
+</section>
+<!--Credits-->
+<section class="CBLtBgClr">
+	<div class="container text-center">
+		<h3>Brought to you by</h3>
+		<br>
+		{% load static %}
+		<img class="img-responsive img-center col-sm-8" src="{% static 'images/cft.png' %}" alt="Code for Tulsa Logo" style="width: 200px">
+		<img class="img-responsive img-center col-sm-8" src="{% static 'images/brigade.png' %}" alt="Code for America Logo" style="width: 250px">
+		<img class="img-responsive img-center col-sm-8" src="{% static 'images/cfm.png' %}" alt="Code for Muskogee" style="width: 200px">
+	</div>
+</section>
+<!--Footer-->
 
 {% endblock %}

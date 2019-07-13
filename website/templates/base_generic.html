@@ -1,10 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  {% block title %}<title>Free Oklahoma Courtdate Notifications</title>{% endblock %}
-</head>
-<body>
-  {% block sidebar %}<!-- insert default navigation text for every page -->{% endblock %}
-  {% block content %}<!-- default content text (typically empty) -->{% endblock %}
-</body>
+
+	<head>
+		{% block title %}<title>Free Oklahoma Courtdate Notifications</title>{% endblock %}
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="friendly neighborhood court robot for getting court case information">
+		<meta name="author" content="Code for Tulsa">
+
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+		<!-- Add additional CSS in static file -->
+		{% load staticfiles %}
+		<link rel="stylesheet" href="{% static "css/styles.css" %}">
+
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-132409583-1"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag('js', new Date());
+
+			gtag('config', 'UA-132409583-1');
+		</script>
+
+	</head>
+
+	<body>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<div class="container">
+				<a class="navbar-brand" href="#">
+					{% load static %}
+					<img class="img-responsive img-center" src="{% static 'images/logo-no-border.png' %}" alt="Courtbot logo" style="width:150px;margin-right:10px;">
+				</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item active">
+							<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#about">About</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#faq">FAQ</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		{% block content %}{% endblock %}
+
+		<footer class="container-fluid text-center" id="footer">
+			<h4>Join us on Facebook and Twitter for news and updates</h4>
+			<div class="row">
+				<div class="col-sm-12">
+					<a href="https://www.facebook.com/MuskogeeCountyCourtBot/"><i class="fab fa-facebook-square" style="font-size:3em; color:#3B5998"></i></a>
+					<a href="https://twitter.com/CodeforMuskogee"><i class="fab fa-twitter-square" style="font-size:3em; color:#08a0e9"></i></a>
+				</div>
+			</div>
+
+		</footer>
+	</body>
+
 </html>
