@@ -10,9 +10,11 @@ visit the Lex Getting Started documentation http://docs.aws.amazon.com/lex/lates
 20190604 : seyeon : Initial validations for year, county, and case number
 """
 import dateutil.parser
-import time
-import os
 import logging
+import os
+import requests
+import time
+
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
@@ -128,9 +130,20 @@ def validate_year(year):
         return False, 'Year', message
     return True, None, message
 
-def validate_case_number(case_number):
+def validate_case_number(county, year, case_number):
     # call the endpoint for validating case number
+    courtbot_url = (f'http://courtbot-python.herokuapp.com/api/case?'
+        f'county={county}&year={year}&case_num={case_number}')
+    response = requests.get(url=courtbot_url)
+    case_info = response.json()
     message = None
+    if case in case_info:
+        event_date = case_info['case'].get('arraignment_date')
+        event_date = datetime.datetime.strptime(
+            event_date, '%Y-%m-%dT%H:%M:%S')
+        message = f'You have an event coming up at {event_date}'
+    else:
+        message = case_info.get('error')
     return True, None, message
 
 
@@ -145,7 +158,8 @@ def validate_case_info(county, year, case_number):
             return build_validation_result(is_valid, slot, message)
 
     if case_number is not None:
-        is_valid, slot, message = validate_case_number(case_number)
+        is_valid, slot, message = validate_case_number(
+            county, year, case_number)
         if not is_valid:
             return build_validation_result(is_valid, slot, message)
 
