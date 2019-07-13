@@ -1,4 +1,4 @@
-.jumbotron {
+/* .jumbotron {
 	background: #532F8C;
 	color: white;
 	padding-bottom: 80px;
@@ -36,15 +36,11 @@
 
 .jumbotron .lang-logo img {
 	max-width: 100%;
-}
-
-@font-face {
-	font-family: GothamBookRegular;
-	src: url('fonts/GothamBookRegular.otf');
-}
+} */
 
 body, p, * {
-	font-family: GothamBookRegular;
+	font-family: 'Montserrat', sans-serif;
+	/* font-family: GothamBookRegular; */
 	color: #302f09;
 }
 
@@ -79,11 +75,6 @@ section, footer {
 	padding: 60px 0;
 }
 
-@font-face {
-	font-family: GothamBold;
-	src: url('fonts/GothamBold.otf');
-}
-
 .navbar {
 	border-bottom: 2px solid black;
 }
@@ -102,7 +93,7 @@ section, footer {
 
 .display-2, h2 {
 	font-size: 42px;
-	font-family: GothamBold;
+	font-weight: bold;
 }
 
 .display-3, h3 {
@@ -112,7 +103,7 @@ section, footer {
 
 .display-4, h4 {
 	font-size: 24px;
-	font-family: GothamBold;
+	font-weight: bold;
 }
 
 .display-4 {
@@ -128,4 +119,30 @@ section, footer {
 
 .CBLtBgClr {
 	background-color: #F6F3DD;
+}
+
+.CBLtBgClr {
+    background-color: #F6F3DD;
+}
+
+/* @font-face {
+    font-family: GothamBookRegular;
+    src: url('fonts/GothamBookRegular.otf');
+} */
+
+p {
+    /* font-family: GothamBookRegular; */
+    padding-bottom: 15px;
+}
+
+
+.facebook {
+    font-size: 5em;
+    color: #3B5998;
+}
+
+@media(min-width: 1030px){
+    .jumbotron .col-sm-4.display-3 br{
+        display: none;
+    }
 }

@@ -21,5 +21,5 @@ from django.views.generic import RedirectView
 urlpatterns = [
     path('sms/', include('sms.urls')),
     path('admin/', admin.site.urls),
-    path('website/', include('website.urls')),
+    path('', include('website.urls')),
 ]
