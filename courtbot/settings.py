@@ -29,8 +29,7 @@ SECRET_KEY = config('SECRET_KEY', default='unsafe-secret-key-for-dev')
 DEBUG = config('DJANGO_DEBUG', default=False)
 
 ALLOWED_HOSTS = [
-    # NOTE: when using ngrok you'll need to add your *.ngrok.io host here
-    "127.0.0.1"
+    config('DJANGO_ALLOWED_HOSTS', default="127.0.0.1")
 ]
 
 
