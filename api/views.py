@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 import re
 
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
@@ -10,25 +10,40 @@ import oscn
 
 @csrf_exempt
 def case(request):
-    year = request.POST['year']
-    county = request.POST['county']
-    case_num = request.POST['case_num']
+    if request.method == 'GET':
+        year = request.GET.get('year', 'NOT PROVIDED')
+        county = request.GET.get('county', 'NOT PROVIDED')
+        case_num = request.GET.get('case_num', 'NOT PROVIDED')
 
-    case = oscn.request.Case(year=year, county=county, number=case_num)
-    arraignment_event = find_arraignment_or_return_False(case.events)
-    arraignment_datetime = parse_datetime_from_oscn_event_string(
-        arraignment_event.Event
-    )
-    import ipdb; ipdb.set_trace()
-    return JsonResponse({
-        'case': {
-            'type': case.type,
-            'year': case.year,
-            'county': case.county,
-            'number': case.number,
-        },
-        'arraignment_datetime': arraignment_datetime
-    })
+        try:
+            case = oscn.request.Case(year=year, county=county, number=case_num)
+        except Exception as exc:
+            print(exc)
+            err_msg = (
+                f'Unable to find case with the following information: '
+                f'year {year}, county {county}, case number {case_num}')
+            return JsonResponse({'error': err_msg})
+
+        arraignment_event = find_arraignment_or_return_False(case.events)
+        if not arraignment_event:
+            err_msg = (
+                f'Unable to find arraignment event with the following '
+                f'year {year}, county {county}, case number {case_num}')
+            return JsonResponse({'error': err_msg})
+        arraignment_datetime = parse_datetime_from_oscn_event_string(
+            arraignment_event.Event
+        )
+
+        return JsonResponse({
+            'case': {
+                'type': case.type,
+                'year': case.year,
+                'county': case.county,
+                'number': case.number,
+            },
+            'arraignment_datetime': arraignment_datetime
+        })
+    return HttpResponse(status=405)
 
 
 @csrf_exempt
