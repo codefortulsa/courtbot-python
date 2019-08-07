@@ -8,6 +8,9 @@ from django.views.decorators.csrf import csrf_exempt
 import oscn
 
 
+from alerts.models import Alert
+
+
 @csrf_exempt
 def case(request):
     if request.method == 'GET':
@@ -50,7 +53,9 @@ def case(request):
 def reminders(request):
     case_num = request.POST['case_num']
     phone_num = request.POST['phone_num']
-    arraignment_datetime = request.POST['arraignment_datetime']
+    arraignment_datetime = datetime.strptime(
+        request.POST['arraignment_datetime'], "%Y-%m-%dT%H:%M:%S"
+    )
 
     week_alert_datetime = arraignment_datetime - timedelta(days=7)
     day_alert_datetime = arraignment_datetime - timedelta(days=1)
@@ -64,7 +69,7 @@ def reminders(request):
         what=f'Arraignment for case {case_num} in 1 day at {arraignment_datetime}',
         to=phone_num
     )
-    return JsonResponse("OK")
+    return JsonResponse({"status":"201 Created"}, status=201)
 
 
 def find_arraignment_or_return_False(events):
