@@ -6,11 +6,13 @@ This is an experimental reimplementation of courtbot using python. It uses the
 ### Requirements
 * python
 * A twilio account
+* PostgreSQL
 
 ### Install & Set up locally
-1. `pip install -r requirements.txt`
+1. `pip install -r requirements.txt` (if you get an error, make sure `postgresql` is installed, then add the folder containing pg_config to your path `export PATH=”/usr/local/bin:/Library/PostgreSQL/9.6/bin:$PATH”`)
 2. `cp .env-dist .env` and put your own values into `.env`
 3. `python manage.py runserver`
+
 
 ### Use ngrok to test twilio callbacks
 To test twilio callbacks, run ngrok to set up a public domain for your
