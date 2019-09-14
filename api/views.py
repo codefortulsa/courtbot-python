@@ -69,7 +69,11 @@ def reminders(request):
         what=f'Arraignment for case {case_num} in 1 day at {arraignment_datetime}',
         to=phone_num
     )
-    return JsonResponse({"status":"201 Created"}, status=201)
+    return JsonResponse({
+        "status":"201 Created",
+        "week_before_datetime": week_alert_datetime,
+        "day_before_datetime": day_alert_datetime,
+    }, status=201)
 
 
 def find_arraignment_or_return_False(events):
