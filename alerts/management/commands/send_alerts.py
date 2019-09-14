@@ -25,3 +25,4 @@ class Command(BaseCommand):
                     body=unsent_alert.what)
             unsent_alert.sent = True
             unsent_alert.save()
+            print('Sent message "' + unsent_alert.what + '" to ' + str(unsent_alert.to))
