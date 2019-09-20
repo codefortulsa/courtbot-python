@@ -48,17 +48,25 @@ def twilio(request):
 
     week_alert_datetime = arraignment_datetime - timedelta(days=7)
     day_alert_datetime = arraignment_datetime - timedelta(days=1)
-    Alert.objects.create(
-        when=week_alert_datetime,
-        what=f'Arraignment for case {case_num} in 1 week at {arraignment_datetime}',
-        to=from_phone
-    )
-    Alert.objects.create(
-        when=day_alert_datetime,
-        what=f'Arraignment for case {case_num} in 1 day at {arraignment_datetime}',
-        to=from_phone
-    )
-    resp.message(f'I will send you a reminder on {week_alert_datetime} and on {day_alert_datetime}')
+    message = f'I will send you a reminder on '
+    if week_alert_datetime > datetime.today():
+        Alert.objects.create(
+            when=week_alert_datetime,
+            what=f'Arraignment for case {case_num} in 1 week at {arraignment_datetime}',
+            to=from_phone
+        )
+        message += f'{week_alert_datetime} and on '
+    if day_alert_datetime > datetime.today():
+        Alert.objects.create(
+            when=day_alert_datetime,
+            what=f'Arraignment for case {case_num} in 1 day at {arraignment_datetime}',
+            to=from_phone
+        )
+        message += f'{day_alert_datetime}'
+    else:
+        message = f'Arraignment for case {case_num} has already passed'
+    # resp.message(f'I will send you a reminder on {week_alert_datetime} and on {day_alert_datetime}')
+    resp.message(message)
     return HttpResponse(resp)
 
 
