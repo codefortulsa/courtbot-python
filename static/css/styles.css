@@ -126,6 +126,18 @@ p {
 	font-size: 0.9em;
 }
 
+footer {
+	color: #999;
+	background: #EEE;
+}
+
+footer a {
+	color: #555;
+}
+footer a:hover {
+	color: #333;
+}
+
 /* Tablet Breakpoint */
 @media all and (min-width: 768px) {
 	.display-1, h1 {
