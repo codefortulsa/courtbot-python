@@ -1,4 +1,4 @@
-body, p, * {
+body {
 	font-family: 'Montserrat', sans-serif;
 	color: #302f09;
 	font-size: 16px;
@@ -99,6 +99,31 @@ p {
 	width: 100%;
 	margin-bottom: 1em;
 	padding: 0.5em 0;
+}
+
+.app-links {
+	max-width: 600px;
+	margin: 0 auto;
+}
+
+.app-links .col-sm-4 {
+	margin-bottom: 2em;
+}
+
+.app-links a {
+	background-color: #ffe052;
+	padding: 0.5em;
+	border-radius: 5px;
+	color: #000000;
+	display: inline-block;
+}
+
+.app-links a:hover {
+	background-color: #DFC23B;
+}
+
+.app-links em {
+	font-size: 0.9em;
 }
 
 /* Tablet Breakpoint */
