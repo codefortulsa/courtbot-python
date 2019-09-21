@@ -1,45 +1,5 @@
-/* .jumbotron {
-	background: #532F8C;
-	color: white;
-	padding-bottom: 80px;
-}
-
-.jumbotron .btn-primary {
-	background: #845ac7;
-	border-color: #845ac7;
-}
-
-.jumbotron .btn-primary:hover {
-	background: #7646c1;
-}
-
-.jumbotron p {
-	color: #d9ccee;
-	max-width: 75%;
-	margin: 1em auto 2em;
-}
-
-.navbar+.jumbotron {
-	margin-top: -20px;
-}
-
-.jumbotron .lang-logo {
-	display: block;
-	background: #B01302;
-	border-radius: 50%;
-	overflow: hidden;
-	width: 100px;
-	height: 100px;
-	margin: auto;
-	border: 2px solid white;
-}
-
-.jumbotron .lang-logo img {
-	max-width: 100%;
-} */
 body, p, * {
 	font-family: 'Montserrat', sans-serif;
-	/* font-family: GothamBookRegular; */
 	color: #302f09;
 	font-size: 16px;
 }
@@ -125,12 +85,7 @@ h4, .display-4 {
 	background-color: #F6F3DD;
 }
 
-/* @font-face {
-    font-family: GothamBookRegular;
-    src: url('fonts/GothamBookRegular.otf');
-} */
 p {
-	/* font-family: GothamBookRegular; */
 	padding-bottom: 15px;
 }
 
@@ -139,12 +94,12 @@ p {
 	color: #3B5998;
 }
 
-@media(min-width: 1030px) {
-	.jumbotron .col-sm-4.display-3 br {
-		display: none;
-	}
+#sponsor-logo img {
+	max-width: 200px;
+	width: 100%;
+	margin-bottom: 1em;
+	padding: 0.5em 0;
 }
-
 
 /* Tablet Breakpoint */
 @media all and (min-width: 768px) {
@@ -181,5 +136,11 @@ p {
 
 	h4, .display-4 {
 		font-size: 24px;
+	}
+}
+
+@media(min-width: 1030px) {
+	.jumbotron .col-sm-4.display-3 br {
+		display: none;
 	}
 }
