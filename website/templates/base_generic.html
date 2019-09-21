@@ -57,14 +57,28 @@
 
 		{% block content %}{% endblock %}
 
-		<footer class="container-fluid text-center" id="footer">
-			<h4>Join us on Facebook and Twitter for news and updates</h4>
+		<footer class="container-fluid text-center py-4" id="footer">
+			<p class="">&copy; {% now "Y" %} <a target="_blank" href="https://www.codeforamerica.org/">Code for America</a>. This project is licensed under the Code for America <a href="https://github.com/codeforamerica/courtbot/blob/master/LICENSE">ISC license</a>. </p>
+			<div class="row justify-content-center">
+				<div class="col-sm-12">
+					<a class="mx-1" target="_blank" href="https://github.com/codefortulsa/courtbot-python">
+						<i class="fab fa-github fa-lg"></i>
+					</a>
+					<a class="mx-1" target="_blank" href="https://www.facebook.com/CourtBot-106405854094008/">
+						<i class="fab fa-facebook fa-lg"></i>
+					</a>
+					<a class="mx-1" href="https://m.me/CourtBot-106405854094008" target="_blank"><i class="fab fa-facebook-messenger fa-lg" style=""></i></a>
+					<a class="mx-1" href="https://slack.com/oauth/authorize?client_id=3558251564.770803254950&scope=bot,chat:write:bot,team:read" target="_blank"><i class="fab fa-slack-hash fa-lg" style=""></i></a>
+					<a class="mx-1" href="mailto:courtbotmuskogee@gmail.com" target="_blank"><i class="far fa-envelope fa-lg" style=""></i></a>
+				</div>
+			</div>
+			<!-- <h4>Join us on Facebook and Twitter for news and updates</h4>
 			<div class="row">
 				<div class="col-sm-12">
 					<a href="https://www.facebook.com/MuskogeeCountyCourtBot/"><i class="hero-icons fab fa-facebook-square fa-2x" style="font-size:3em; color:#3B5998"></i></a>
 					<a href="https://twitter.com/CodeforMuskogee"><i class="hero-icons fab fa-twitter-square fa-2x" style="font-size:3em; color:#08a0e9"></i></a>
 				</div>
-			</div>
+			</div> -->
 
 		</footer>
 		<script src="https://kit.fontawesome.com/4082aee318.js" crossorigin="anonymous"></script>
