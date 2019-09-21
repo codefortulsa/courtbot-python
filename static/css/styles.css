@@ -37,11 +37,11 @@
 .jumbotron .lang-logo img {
 	max-width: 100%;
 } */
-
 body, p, * {
 	font-family: 'Montserrat', sans-serif;
 	/* font-family: GothamBookRegular; */
 	color: #302f09;
+	font-size: 16px;
 }
 
 .center {
@@ -87,27 +87,26 @@ section, footer {
 }
 
 .display-1, h1 {
-	font-size: 72px;
-	font-weight: lighter;
-}
-
-.display-2, h2 {
-	font-size: 42px;
-	font-weight: bold;
-}
-
-.display-3, h3 {
 	font-size: 32px;
 	font-weight: lighter;
 }
 
-.display-4, h4 {
+.display-2, h2 {
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.display-3, h3 {
 	font-size: 24px;
+	font-weight: lighter;
+}
+
+h4, .display-4 {
+	font-size: 18px;
 	font-weight: bold;
 }
 
 .display-4 {
-	font-size: 22px;
 	font-weight: lighter;
 }
 
@@ -115,6 +114,7 @@ section, footer {
 	max-width: 900px;
 	margin-left: auto;
 	margin-right: auto;
+	font-size: 1em;
 }
 
 .CBLtBgClr {
@@ -122,27 +122,64 @@ section, footer {
 }
 
 .CBLtBgClr {
-    background-color: #F6F3DD;
+	background-color: #F6F3DD;
 }
 
 /* @font-face {
     font-family: GothamBookRegular;
     src: url('fonts/GothamBookRegular.otf');
 } */
-
 p {
-    /* font-family: GothamBookRegular; */
-    padding-bottom: 15px;
+	/* font-family: GothamBookRegular; */
+	padding-bottom: 15px;
 }
-
 
 .facebook {
-    font-size: 5em;
-    color: #3B5998;
+	font-size: 5em;
+	color: #3B5998;
 }
 
-@media(min-width: 1030px){
-    .jumbotron .col-sm-4.display-3 br{
-        display: none;
-    }
+@media(min-width: 1030px) {
+	.jumbotron .col-sm-4.display-3 br {
+		display: none;
+	}
+}
+
+
+/* Tablet Breakpoint */
+@media all and (min-width: 768px) {
+	.display-1, h1 {
+		font-size: 56px;
+	}
+
+	.display-2, h2 {
+		font-size: 42px;
+	}
+
+	.display-3, h3 {
+		font-size: 36px;
+	}
+
+	h4 {
+		font-size: 20px;
+	}
+}
+
+/* Desktop Breakpoint */
+@media all and (min-width: 768px) {
+	.display-1, h1 {
+		font-size: 72px;
+	}
+
+	.display-2, h2 {
+		font-size: 42px;
+	}
+
+	.display-3, h3 {
+		font-size: 32px;
+	}
+
+	h4, .display-4 {
+		font-size: 24px;
+	}
 }
