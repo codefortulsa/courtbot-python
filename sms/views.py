@@ -20,13 +20,15 @@ def twilio(request):
     # Check case number matches TT-YYYY-NUMBER
     case_re = re.compile('[A-Za-z]{2,2}\-\d{4,4}\-\d{,5}')
     if not case_re.match(case_num):
-        resp.message(f'Sorry, I couldn\'t find case {case_num}. Please use a'
+        resp.message(f'Sorry, case {case_num} does not match the expected format. Please use a'
                     f' full case number like CF-2019-1234')
         return HttpResponse(resp)
 
     from_phone = request.POST['From']
     # FIXME: no county defaults to Tulsa
-    case = oscn.request.Case(year='2018', number=case_num)
+    case_county = 'tulsa'
+    [case_type, case_year, number] = case_num.split("-")
+    case = oscn.request.Case(county=case_county, type=case_type, year=case_year, number=number)
     arraignment_event = find_arraignment_or_return_False(case.events)
     if not arraignment_event:
         resp.message(f'Sorry, I couldn\'t find an arraignment event for case {case_num}')

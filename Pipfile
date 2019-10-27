@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+gunicorn = "==19.9.0"
+oscn = "==0.0.0.32"
+python-decouple = "==3.1"
+twilio = "==6.24.0"
+django-heroku = "==0.3.1"
+django-phonenumber-field = "==2.2.0"
+phonenumbers = "==8.10.5"
+whitenoise = "==4.1.2"
+Django = "==2.1.11"
+
+[dev-packages]
+"autopep8" = "*"
+
+[requires]
+python_version = "3.7"
