@@ -63,14 +63,14 @@ def reminders(request):
         "status":"201 Created"
     }
     if week_alert_datetime > datetime.today():
-        Alert.objects.create(
+        Alert.objects.get_or_create(
             when=week_alert_datetime,
             what=f'Arraignment for case {case_num} in 1 week at {arraignment_datetime}',
             to=phone_num
         )
         message['week_before_datetime'] = week_alert_datetime
     if day_alert_datetime > datetime.today():
-        Alert.objects.create(
+        Alert.objects.get_or_create(
             when=day_alert_datetime,
             what=f'Arraignment for case {case_num} in 1 day at {arraignment_datetime}',
             to=phone_num
