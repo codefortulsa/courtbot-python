@@ -1,5 +1,5 @@
-from ast import literal_eval
 from datetime import datetime, timedelta
+import json
 
 from django.test import RequestFactory, TestCase
 
@@ -21,10 +21,10 @@ class testReminders(TestCase):
             "case_num": 1,
             "phone_num": "+1-918-555-5555",
         })
-        result = reminders(request)
-        response = literal_eval(result.content.decode('utf-8'))
+        response = reminders(request)
+        resp_json = json.loads(response.content)
         self.assertEqual(Alert.objects.all().count(), 2)
-        self.assertEqual(response['status'], '201 Created')
+        self.assertEqual(resp_json['status'], '201 Created')
 
 
     def testReminderWithArraignmentIn2Days(self):
@@ -34,10 +34,10 @@ class testReminders(TestCase):
             "case_num": 2,
             "phone_num": "+1-918-555-5555",
         })
-        result = reminders(request)
-        response = literal_eval(result.content.decode('utf-8'))
+        response = reminders(request)
+        resp_json = json.loads(response.content)
         self.assertEqual(Alert.objects.all().count(), 1)
-        self.assertEqual(response['status'], '201 Created')
+        self.assertEqual(resp_json['status'], '201 Created')
 
 
     def testReminderWithArraignmentToday(self):
@@ -47,7 +47,7 @@ class testReminders(TestCase):
             "case_num": 3,
             "phone_num": "+1-918-555-5555",
         })
-        result = reminders(request)
-        response = literal_eval(result.content.decode('utf-8'))
+        response = reminders(request)
+        resp_json = json.loads(response.content)
         self.assertEqual(Alert.objects.all().count(), 0)
-        self.assertEqual(response['status'], '410 Gone')
+        self.assertEqual(resp_json['status'], '410 Gone')
