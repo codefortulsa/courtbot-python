@@ -19,7 +19,6 @@ from django.conf import settings
 from django.views.generic import RedirectView
 
 urlpatterns = [
-    path('sms/', include('sms.urls')),
     path('api/', include('api.urls')),
     path('admin/', admin.site.urls),
     path('', include('website.urls')),
