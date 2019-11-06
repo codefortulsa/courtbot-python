@@ -1,7 +1,7 @@
 language: python
 python:
 - '3.6'
-script: bash -c "echo TODO"
+script: echo TODO flake8 lambda_function.py
 deploy:
   on:
     branch: production
