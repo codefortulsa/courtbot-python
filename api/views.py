@@ -34,7 +34,7 @@ def case(request):
                 f'year {year}, county {county}, case number {case_num}')
             return JsonResponse({'error': err_msg})
         arraignment_datetime = parse_datetime_from_oscn_event_string(
-            arraignment_event.Event
+            arraignment_event
         )
 
         return JsonResponse({
@@ -78,11 +78,14 @@ def reminders(request):
 
 def find_arraignment_or_return_False(events):
     for event in events:
-        if "arraignment" in event.Docket.lower():
-            return event
+        if "description" in event.keys():
+            if event['description'] == 'ARRAIGNMENT':
+                return event
     return False
 
 
 def parse_datetime_from_oscn_event_string(event):
-    event = event.replace('ARRAIGNMENT', '').rstrip()
-    return datetime.strptime(event, "%A, %B %d, %Y at %I:%M %p")
+    if 'date' in event.keys():
+        date_str = event['date']
+        return datetime.strptime(date_str, "%A, %B %d, %Y at %I:%M %p")
+    return False
