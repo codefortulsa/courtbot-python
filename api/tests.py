@@ -61,7 +61,9 @@ class testReminders(TestCase):
             "phone_num": "+1-918-555-5555",
         })       
         response = reminders(request)
-        reminders(request) # Submitting a duplicate reminder
         resp_json = json.loads(response.content)
+        self.assertEqual(Alert.objects.all().count(), 2)
+        self.assertEqual(resp_json['status'], '201 Created')
+        reminders(request) # Submitting a duplicate reminder
         self.assertEqual(Alert.objects.all().count(), 2)
         self.assertEqual(resp_json['status'], '201 Created')
