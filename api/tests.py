@@ -51,3 +51,19 @@ class testReminders(TestCase):
         resp_json = json.loads(response.content)
         self.assertEqual(Alert.objects.all().count(), 0)
         self.assertEqual(resp_json['status'], '410 Gone')
+   
+
+    def testPreventDuplicateReminder(self):
+        arraignment_datetime = (datetime.today() + timedelta(days=8)).strftime('%Y-%m-%dT%H:%M:%S')
+        request = self._post('/api/reminders', {
+            "arraignment_datetime": arraignment_datetime,
+            "case_num": 1,
+            "phone_num": "+1-918-555-5555",
+        })       
+        response = reminders(request)
+        resp_json = json.loads(response.content)
+        self.assertEqual(Alert.objects.all().count(), 2)
+        self.assertEqual(resp_json['status'], '201 Created')
+        reminders(request) # Submitting a duplicate reminder
+        self.assertEqual(Alert.objects.all().count(), 2)
+        self.assertEqual(resp_json['status'], '201 Created')
