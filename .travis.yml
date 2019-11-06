@@ -1,8 +1,7 @@
 language: python
 python:
 - '3.6'
-script:
-- bash -c "echo TODO: lambda tests"
+script: bash -c "echo TODO"
 deploy:
   on:
     branch: production
