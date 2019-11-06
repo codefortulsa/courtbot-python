@@ -8,7 +8,7 @@ deploy:
   provider: lambda
   function_name: lambda_function
   region: us-west-2
-  role: arn:aws:lambda:us-west-2:147768536717:function:GetCaseInfoHook
+  role: arn:aws:iam::147768536717:role/DeployGetCaseInfoHook
   runtime: python3.7
   handler_name: lambda_function.lambda_handler
   access_key_id: AKIASEZ5Q52G6YKVITMQ
