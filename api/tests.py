@@ -75,4 +75,22 @@ class testReminders(TestCase):
         response = eligible_jurisdiction(request)
         resp_json = json.loads(response.content)
         print(resp_json)
-        self.assertEqual(resp_json, {'jurisdiction_type': 'county', 'eligible_jurisdictions': ['Tulsa', 'Rogers']})
+        self.assertEqual(resp_json, {
+            'jurisdiction_type': 'county',
+            'eligible_jurisdictions': [
+                'adair', 'alfalfa', 'appellate', 'atoka', 'beaver', 'beckham',
+                'blaine', 'bryan', 'caddo', 'canadian', 'carter', 'cherokee',
+                'choctaw', 'cimarron', 'cleveland', 'coal', 'comanche',
+                'cotton', 'craig', 'creek', 'bristow', 'drumright', 'custer',
+                'delaware', 'dewey', 'ellis', 'garfield', 'garvin', 'grady',
+                'grant', 'greer', 'harmon', 'harper', 'haskell', 'hughes',
+                'jackson', 'jefferson', 'johnston', 'kay', 'poncacity',
+                'kingfisher', 'kiowa', 'latimer', 'leflore', 'lincoln',
+                'logan', 'love', 'major', 'marshall', 'mayes', 'mcclain',
+                'mccurtain', 'mcintosh', 'murray', 'muskogee', 'noble',
+                'nowata', 'okfuskee', 'oklahoma', 'okmulgee', 'henryetta',
+                'osage', 'ottawa', 'payne', 'pawnee', 'pittsburg', 'pontotoc',
+                'pottawatomie', 'pushmataha', 'rogermills', 'rogers',
+                'seminole', 'sequoyah', 'stephens', 'texas', 'tillman',
+                'tulsa', 'wagoner', 'washington', 'washita', 'woods',
+                'woodward']})

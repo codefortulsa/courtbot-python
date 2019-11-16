@@ -91,7 +91,7 @@ def eligible_jurisdiction(request):
 
         if state == 'OK':
             jurisdiction_type = 'county'
-            eligible_jurisdictions = ['Tulsa', 'Rogers', 'Muskogee']
+            eligible_jurisdictions = oscn.counties
             return JsonResponse({
                 'jurisdiction_type': jurisdiction_type,
                 'eligible_jurisdictions': eligible_jurisdictions,
