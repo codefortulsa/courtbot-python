@@ -59,21 +59,29 @@ def reminders(request):
 
     week_alert_datetime = arraignment_datetime - timedelta(days=7)
     day_alert_datetime = arraignment_datetime - timedelta(days=1)
-    Alert.objects.create(
-        when=week_alert_datetime,
-        what=f'Arraignment for case {case_num} in 1 week at {arraignment_datetime}',
-        to=phone_num
-    )
-    Alert.objects.create(
-        when=day_alert_datetime,
-        what=f'Arraignment for case {case_num} in 1 day at {arraignment_datetime}',
-        to=phone_num
-    )
-    return JsonResponse({
-        "status":"201 Created",
-        "week_before_datetime": week_alert_datetime,
-        "day_before_datetime": day_alert_datetime,
-    }, status=201)
+    message = {
+        "status":"201 Created"
+    }
+    if week_alert_datetime > datetime.today():
+        Alert.objects.get_or_create(
+            when=week_alert_datetime,
+            what=f'Arraignment for case {case_num} in 1 week at {arraignment_datetime}',
+            to=phone_num
+        )
+        message['week_before_datetime'] = week_alert_datetime
+    if day_alert_datetime > datetime.today():
+        Alert.objects.get_or_create(
+            when=day_alert_datetime,
+            what=f'Arraignment for case {case_num} in 1 day at {arraignment_datetime}',
+            to=phone_num
+        )
+        message['day_before_datetime'] = day_alert_datetime
+        return JsonResponse(message, status=201)
+    else:
+        return JsonResponse({
+            "status":"410 Gone", #https://www.codetinkerer.com/2015/12/04/choosing-an-http-status-code.html
+            "error":f'Arraignment for case {case_num} has already passed'
+        }, status=410)
 
 
 def find_arraignment_or_return_False(events):

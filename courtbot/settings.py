@@ -48,7 +48,6 @@ INSTALLED_APPS = [
 
     'website',
     'alerts',
-    'sms',
 ]
 
 MIDDLEWARE = [
