@@ -7,3 +7,4 @@ django-heroku==0.3.1
 django-phonenumber-field==2.2.0
 phonenumbers==8.10.5
 whitenoise==4.1.2
+newrelic==5.10.0.138

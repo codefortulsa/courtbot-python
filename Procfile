@@ -1,1 +1,1 @@
-web: gunicorn courtbot.wsgi
+web: newrelic-admin run-program gunicorn courtbot.wsgi
