@@ -84,6 +84,27 @@ def reminders(request):
         }, status=410)
 
 
+@csrf_exempt
+def eligible_jurisdiction(request):
+    if request.method == 'GET':
+        state = request.GET.get('state', 'NOT PROVIDED')
+
+        if state == 'OK':
+            jurisdiction_type = 'county'
+            eligible_jurisdictions = oscn.counties
+            return JsonResponse({
+                'jurisdiction_type': jurisdiction_type,
+                'eligible_jurisdictions': eligible_jurisdictions,
+            })
+        else:
+            err_msg = (
+                f'That eligible jurisdiction list is not available  '
+                f'at this time.')
+            return JsonResponse({'error': err_msg})
+
+    return HttpResponse(status=405)
+
+
 def find_arraignment_or_return_False(events):
     for event in events:
         if "arraignment" in event.Docket.lower():
