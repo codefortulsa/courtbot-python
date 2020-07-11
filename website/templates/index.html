@@ -28,6 +28,8 @@
 			<!-- <div class="col-sm-4 display-3">Rogers <br />County<br /><a class="btn btn-lg btn-yellow" style="font-size:20px" href="sms:9182059352">(918)-205-9352</a></div> -->
 			<!-- <div class="col-sm-4 display-3">Tulsa <br />County<br /><a class="btn btn-lg btn-yellow" style="font-size:20px" href="sms:9189923222">(918)-992-3222</a></div> -->
 		</div>
+		
+
 
 	</div>
 </div>
@@ -60,8 +62,44 @@
 		</article>
 	</div>
 </section>
+<!-- Case Reminder Form -->
+<section id="form">
+	<div class="container text-center">
+		{% if messages %}
+        	{% for message in messages %}
+    		<p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+    		{% endfor %}
+		{% endif %}
+		<h2>Fill Out Reminder Form:</h2>
+		<form action="/schedule_reminders" id="case-form" method="POST">
+			<div class="form-group">
+				<label for="case_num">Case Number <small>(ex: CF-1234-5678)</small></label>
+				<input type="text" class="form-control" id="case_num" name="case_num" placeholder="Enter case number" required>
+			</div>
+			<div class="form-group">
+				<label for="year">Year Filed</label>	
+				<input type="number" class="form-control" id="year" name="year" min="2000" max="2100" placeholder="Enter year filed" required>
+			</div>
+			<div class="form-group">
+				<label for="county">County</label>
+				<input type="text" class="form-control" id="county" name="county" placeholder="Enter county" required>
+			</div>
+			<div class="form-group">
+				<label for="phone_num">Reminder Phone Number <small>(ex: 918-123-4567)</small></label>
+				<input type="tel" class="form-control" id="phone_num" name="phone_num" placeholder="Enter Phone Number"
+				pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
+			</div>
+			<div class="form-group">
+				<label for="add_phone_num">Additional Phone Number</label>
+				<input type="tel" class="form-control" id="add_phone_num" name="add_phone_num" placeholder="Enter Phone Number"
+				pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
+			</div>
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+	</div>
+</section>
 <!--FAQs-->
-<section id="faq">
+<section id="faq" class="CBLtBgClr">
 	<div class="container">
 		<h2 class="center">Frequently Asked Questions</h2>
 		<br>
@@ -72,7 +110,7 @@
 			</div>
 			<div class="col-sm-6">
 				<h4>2. What if I still can't find my case number?</h4>
-				<p>Check with your public defender or search your name online at <a href=“www.oscn.net/docets/search.aspx”>www.oscn.net/docets/search.aspx </a> </p> </div> <div class="col-sm-6">
+				<p>Check with your public defender or search your name online at <a href=“www.oscn.net/dockets/search.aspx”>www.oscn.net/dockets/search.aspx </a> </p> </div> <div class="col-sm-6">
 						<h4>3. Can other people be reminded of my court date?</h4>
 						<p>Anyone with your case number will be able to use courtbot to keep track of your court date.</p>
 			</div>
@@ -100,7 +138,7 @@
 	</div>
 </section>
 <!--Credits-->
-<section class="CBLtBgClr">
+<section>
 	<div id="sponsor-logo" class="container text-center ">
 		<h3>Brought to you by</h3>
 		<br>
