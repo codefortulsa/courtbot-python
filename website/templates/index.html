@@ -33,32 +33,7 @@
 			<!-- <div class="col-sm-4 display-3">Rogers <br />County<br /><a class="btn btn-lg btn-yellow" style="font-size:20px" href="sms:9182059352">(918)-205-9352</a></div> -->
 			<!-- <div class="col-sm-4 display-3">Tulsa <br />County<br /><a class="btn btn-lg btn-yellow" style="font-size:20px" href="sms:9189923222">(918)-992-3222</a></div> -->
 		</div>
-		<p class="display-3">Or Fill Out Form:</p>
-		<form action="/form_data" id="case-form" method="POST">
-			<div class="form-group">
-				<label for="case_num">Case Number</label>
-				<input type="text" class="form-control" id="case_num" name="case_num" placeholder="Enter case number">
-			</div>
-			<div class="form-group">
-				<label for="year">Year Filed</label>	
-				<input type="number" class="form-control" id="year" name="year" min="2000" max="2100" placeholder="Enter year filed">
-			</div>
-			<div class="form-group">
-				<label for="county">County</label>
-				<input type="text" class="form-control" id="county" name="county" placeholder="Enter county">
-			</div>
-			<div class="form-group">
-				<label for="phone_num">Reminder Phone Number <small>(ex: 918-123-4567)</small></label>
-				<input type="tel" class="form-control" id="phone_num" name="phone_num" placeholder="Enter Phone Number"
-				pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
-			</div>
-			<div class="form-group">
-				<label for="add_phone_num">Additional Phone Number</label>
-				<input type="tel" class="form-control" id="add_phone_num" name="add_phone_num" placeholder="Enter Phone Number"
-				pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
-			</div>
-			<button type="submit" class="btn btn-primary">Submit</button>
-		</form>
+		
 
 
 	</div>
@@ -90,6 +65,37 @@
 			<p class="lead">Failure-to-appear and failure-to-pay fines can quickly snowball, especially for those living paycheck-to-paycheck. CourtBot helps clients avoid mistakes that burden them and the criminal justice system. Government done well can
 				help.</p>
 		</article>
+	</div>
+</section>
+<!-- Case Reminder Form -->
+<section id="form">
+	<div class="container text-center">
+		<h2>Or Fill Out Form:</h2>
+		<form action="/form_data" id="case-form" method="POST">
+			<div class="form-group">
+				<label for="case_num">Case Number</label>
+				<input type="text" class="form-control" id="case_num" name="case_num" placeholder="Enter case number">
+			</div>
+			<div class="form-group">
+				<label for="year">Year Filed</label>	
+				<input type="number" class="form-control" id="year" name="year" min="2000" max="2100" placeholder="Enter year filed">
+			</div>
+			<div class="form-group">
+				<label for="county">County</label>
+				<input type="text" class="form-control" id="county" name="county" placeholder="Enter county">
+			</div>
+			<div class="form-group">
+				<label for="phone_num">Reminder Phone Number <small>(ex: 918-123-4567)</small></label>
+				<input type="tel" class="form-control" id="phone_num" name="phone_num" placeholder="Enter Phone Number"
+				pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
+			</div>
+			<div class="form-group">
+				<label for="add_phone_num">Additional Phone Number</label>
+				<input type="tel" class="form-control" id="add_phone_num" name="add_phone_num" placeholder="Enter Phone Number"
+				pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
+			</div>
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
 	</div>
 </section>
 <!--FAQs-->
