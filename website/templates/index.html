@@ -4,11 +4,6 @@
 
 <div class="jumbotron bright-yellow-bkg">
 	<div class="container text-center">
-		{% if messages %}
-        	{% for message in messages %}
-    		<p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
-    		{% endfor %}
-		{% endif %}
 		<h1 class="display-1">Get Court Date Reminders</h1>
 		<p class="display-2">Text your OSCN Case&nbsp;Number:</p>
 		<div class="row justify-content-center">
@@ -70,24 +65,29 @@
 <!-- Case Reminder Form -->
 <section id="form">
 	<div class="container text-center">
+		{% if messages %}
+        	{% for message in messages %}
+    		<p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+    		{% endfor %}
+		{% endif %}
 		<h2>Fill Out Reminder Form:</h2>
-		<form action="/form_data" id="case-form" method="POST">
+		<form action="/schedule_reminders" id="case-form" method="POST">
 			<div class="form-group">
 				<label for="case_num">Case Number <small>(ex: CF-1234-5678)</small></label>
-				<input type="text" class="form-control" id="case_num" name="case_num" placeholder="Enter case number">
+				<input type="text" class="form-control" id="case_num" name="case_num" placeholder="Enter case number" required>
 			</div>
 			<div class="form-group">
 				<label for="year">Year Filed</label>	
-				<input type="number" class="form-control" id="year" name="year" min="2000" max="2100" placeholder="Enter year filed">
+				<input type="number" class="form-control" id="year" name="year" min="2000" max="2100" placeholder="Enter year filed" required>
 			</div>
 			<div class="form-group">
 				<label for="county">County</label>
-				<input type="text" class="form-control" id="county" name="county" placeholder="Enter county">
+				<input type="text" class="form-control" id="county" name="county" placeholder="Enter county" required>
 			</div>
 			<div class="form-group">
 				<label for="phone_num">Reminder Phone Number <small>(ex: 918-123-4567)</small></label>
 				<input type="tel" class="form-control" id="phone_num" name="phone_num" placeholder="Enter Phone Number"
-				pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
+				pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
 			</div>
 			<div class="form-group">
 				<label for="add_phone_num">Additional Phone Number</label>
