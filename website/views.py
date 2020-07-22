@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from datetime import datetime, timedelta
 import re
 
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
@@ -11,6 +11,9 @@ import oscn, requests, json
 
 
 from alerts.models import Alert
+
+def oscnRedirect(request):
+    return HttpResponseRedirect("www.oscn.net/dockets/search.aspx")
 
 def index(request):
     # """View function for home page of site."""
@@ -72,3 +75,6 @@ def schedule_reminders(request):
           _, another_reminder_message = set_case_reminder(arraignment_datetime, case_num, add_num)
           messages.info(request, another_reminder_message)
     return redirect('/#form')
+
+#def oscnRedirect(request):
+    #return redirect("www.oscn.net/dockets/search.aspx")
