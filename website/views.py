@@ -12,6 +12,7 @@ import oscn, requests, json
 
 from alerts.models import Alert
 
+
 def index(request):
     # """View function for home page of site."""
 
@@ -72,3 +73,4 @@ def schedule_reminders(request):
           _, another_reminder_message = set_case_reminder(arraignment_datetime, case_num, add_num)
           messages.info(request, another_reminder_message)
     return redirect('/#form')
+
