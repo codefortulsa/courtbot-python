@@ -83,7 +83,7 @@ def schedule_reminders(request):
 def unsubscribe_reminders(request):
     # Remove reminders associated with phone number
     phone = request.POST['remove_phone_num']
-    remove_request = requests.delete(f"http://localhost:8000/api/unsubscribe/{phone}")
+    remove_request = requests.delete(f"https://courtbot-python.herokuapp.com/api/unsubscribe/{phone}")
     resp = json.loads(remove_request.content)
     messages.info(request, resp.get('message', None), extra_tags='unsubscribe')
     return redirect('/')
