@@ -19,6 +19,9 @@ def index(request):
     # Render the HTML template index.html with the data in the context variable
     return render(request, 'index.html')
 
+def unsubscribe(request):
+    return render(request, )    
+
 def check_valid_case(request):
     # Process form data and requests arraignment data form api/case
     case_num = request.POST['case_num']
@@ -42,6 +45,7 @@ def set_case_reminder(arraignment_datetime, case_num, phone_num):
         "phone_num": f"+1-{phone_num}"
     })
     resp = json.loads(reminder_request.content)
+  
     if resp.get('error', None):
         return False, resp['error']
     message = f'Text reminder for case {case_num} occuring on {arraignment_datetime} was scheduled under {phone_num}.'
@@ -72,5 +76,14 @@ def schedule_reminders(request):
         if add_num:
           _, another_reminder_message = set_case_reminder(arraignment_datetime, case_num, add_num)
           messages.info(request, another_reminder_message)
+ 
     return redirect('/#form')
 
+@csrf_exempt
+def unsubscribe_reminders(request):
+    # Remove reminders associated with phone number
+    phone = request.POST['remove_phone_num']
+    remove_request = requests.delete(f"http://localhost:8000/api/unsubscribe/{phone}")
+    resp = json.loads(remove_request.content)
+    messages.info(request, resp.get('message', None), extra_tags='unsubscribe')
+    return redirect('/')

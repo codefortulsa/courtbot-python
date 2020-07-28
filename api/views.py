@@ -104,6 +104,17 @@ def eligible_jurisdiction(request):
 
     return HttpResponse(status=405)
 
+@csrf_exempt
+def unsubscribe(request, phone):
+    formatted_phone = "+1-" + phone
+    alerts = Alert.objects.filter(to=formatted_phone)
+    message = ''
+    if not alerts:
+        message = f"There are no reminders set for {phone}."
+    else:    
+        alerts.delete()  
+        message = f"Reminders for {phone} deleted."
+    return JsonResponse({'message': message})     
 
 def find_arraignment_or_return_False(events):
     for event in events:
