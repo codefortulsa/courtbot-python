@@ -105,7 +105,7 @@ class testReminders(TestCase):
                     what="test reminder"
                 )
         alert.save()
-        self.assertEqual(Alert.objects.filter(to='+1-000-001-0002').all().count(), 1)
+        self.assertEqual(Alert.objects.filter(to='+1-000-001-0002').count(), 1)
 
         request = self._delete('api/unsubscribe/000-001-0002')
         response = unsubscribe(request, '000-001-0002')
