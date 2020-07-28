@@ -29,7 +29,7 @@ class testReminders(TestCase):
         })
         response = reminders(request)
         resp_json = json.loads(response.content)
-        self.assertEqual(Alert.objects.all().count(), 2)
+        self.assertEqual(Alert.objects.count(), 2)
         self.assertEqual(resp_json['status'], '201 Created')
 
     def testReminderWithArraignmentIn2Days(self):
