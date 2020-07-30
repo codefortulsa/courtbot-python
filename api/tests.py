@@ -5,6 +5,7 @@ from django.test import RequestFactory, TestCase
 
 from .views import reminders, eligible_jurisdiction, unsubscribe
 from alerts.models import Alert
+from decouple import config
 
 
 class testReminders(TestCase):
@@ -17,8 +18,8 @@ class testReminders(TestCase):
     def _get(self, url, params):
         return self.factory.get(url, params)
 
-    def _delete(self, url):
-        return self.factory.delete(url)    
+    # def _delete(self, url):
+    #     return self.factory.delete(url)    
 
     def testReminderWithArraignmentIn8Days(self):
         arraignment_datetime = (datetime.today() + timedelta(days=8)).strftime('%Y-%m-%dT%H:%M:%S')
@@ -107,7 +108,9 @@ class testReminders(TestCase):
         alert.save()
         self.assertEqual(Alert.objects.filter(to='+1-000-001-0002').count(), 1)
 
-        request = self._delete('api/unsubscribe/000-001-0002')
+        request = self._post('api/unsubscribe/000-001-0002', {
+            'key': config('SECRET_KEY')
+        })
         response = unsubscribe(request, '000-001-0002')
         resp_json = json.loads(response.content)
         message = resp_json.get('message', None)
@@ -115,7 +118,9 @@ class testReminders(TestCase):
         self.assertEqual(Alert.objects.filter(to='+1-000-001-0002').count(), 0)
 
     def testUnsubsribeNotExists(self):
-        request = self._delete('api/unsubscribe/000-001-0003')
+        request = self._post('api/unsubscribe/000-001-0003', {
+            'key': config('SECRET_KEY')
+        })
         response = unsubscribe(request, '000-001-0003')
         resp_json = json.loads(response.content)
         message = resp_json.get('message', None)

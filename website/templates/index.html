@@ -4,13 +4,6 @@
 
 <div class="jumbotron bright-yellow-bkg">
 	<div class="container text-center">
-		{% if messages %}
-			{% for message in messages %}
-			  {% if message.extra_tags and message.extra_tags == 'unsubscribe' %}
-				<p>{{ message }}</p>
-	          {% endif %}	
-    		{% endfor %}
-		{% endif %}
 		<h1 class="display-1">Get Court Date Reminders</h1>
 		<p class="display-2">Text your OSCN Case&nbsp;Number:</p>
 		<div class="row justify-content-center">
@@ -139,27 +132,54 @@
 				<h4>6. How often will I be reminded?</h4>
 				<p>Currently, you will only be reminded once.</p>
 			</div>
-			<div class="col-sm-6">
+			<div class="col-sm-6" id='contact'>
 				<h4>7. How do I contact the people behind CourtBot?</h4>
 				<p>You can contact us at <a href="mailto:courtbotmuskogee@gmail.com">courtbotmuskogee@gmail.com.</a></p>
 			</div>
 			<div class="col-sm-6">
 				<h4>8. How do I unsubscribe?</h4>
-				<p class="mb-0">Click unsubscribe to remove reminders.</p>
+				<p class='mb-0'>Click unsubscribe to remove reminders.</p>
+				<!-- Dropdown form for unsubscribing -->
 				<div class="col-sm-6 dropdown mt-0"></div>
 					<button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						Unsubscribe
-						</button>
-					<form class="dropdown-menu p-4" action="/unsubscribe_reminders" method="POST">
+					</button>
+					<form class="dropdown-menu p-4" action="/send_verification_code" method="POST">
 						<div class="form-group">
-						<small>(ex: 918-123-4567)</small>
-						<input type="tel" class="form-control" id="remove_phone_num" name="remove_phone_num" placeholder="Enter Phone Number"
-				        	pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
+							<small>(ex: 918-123-4567)</small>
+							<input type="tel" class="form-control" id="remove_phone_num" name="remove_phone_num" placeholder="Enter Phone Number"
+								pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
 						</div>
 						<div class="form-group">
 						<button type="submit" class="btn btn-sm btn-primary">Remove</button>
 					</form>
 				</div>
+				<!-- Message for unsubscribing response -->
+				{% if messages %}
+					{% for message in messages %}
+			  			{% if message.extra_tags and message.extra_tags == 'unsubscribe' %}
+							<p>{{ message }}</p>
+	          			{% endif %}	
+    				{% endfor %}
+				{% endif %}
+			
+				<!-- Displays verification code form if verify message tag exists -->
+				{% if messages %}
+					{% for message in messages %}
+						{% if message.extra_tags and message.extra_tags == 'verify' %}
+							<p>{{ message }}</p>
+							<form action="/unsubscribe_reminders" method="POST" id="verify">
+							<div class="form-group">
+								<input type="number" class="form-control" id="verification_code" name="verification_code" placeholder="Enter 4 digit code"
+									pattern="[0-9]{4}" required>
+							</div>
+							<div class="form-group">
+							<button type="submit" class="btn btn-sm btn-primary">Submit</button>
+							</form>
+						{% endif %}
+					{% endfor %}
+				{% endif %}
+		
 			</div>
 		</div>
 	</div>
