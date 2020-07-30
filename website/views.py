@@ -114,7 +114,7 @@ def send_verification_code(request):
     client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
     message = client.messages.create(
             to=formatted_phone,
-            from_='+16313785886',
+            from_=TWILIO_FROM_NUMBER,
             body=f"Courtbot unsubscribe verification code: {code}"
     )
     messages.info(request, 'Enter verification code', extra_tags='verify')
