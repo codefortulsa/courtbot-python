@@ -4,6 +4,7 @@ import re
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from decouple import config
 
 import oscn
 
@@ -104,6 +105,21 @@ def eligible_jurisdiction(request):
 
     return HttpResponse(status=405)
 
+@csrf_exempt
+def unsubscribe(request, phone):
+    key = request.POST.get('key', None)
+    message =''
+    if key == config('SECRET_KEY'):
+        formatted_phone = "+1-" + phone
+        alerts = Alert.objects.filter(to=formatted_phone)
+        if not alerts:
+            message = f"There are no reminders set for {phone}."
+        else:    
+            alerts.delete()  
+            message = f"Reminders for {phone} deleted."
+    else:
+        message = "Unauthorized."        
+    return JsonResponse({'message': message})     
 
 def find_arraignment_or_return_False(events):
     for event in events:
