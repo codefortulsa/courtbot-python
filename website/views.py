@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from datetime import datetime, timedelta
 import re
 from random import randint
-from twilio.rest import Client
 
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
