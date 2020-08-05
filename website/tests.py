@@ -33,7 +33,7 @@ class testFormViews(TestCase):
 
     def test_form_data_view_scheduled(self):
         data = {
-                "case_num": "CF-2020-2803",
+                "case_num": "CF-2020-3314",
                 "year": 2020,
                 "county": "Tulsa",
                 "phone_num": "000-000-0000",
@@ -41,5 +41,5 @@ class testFormViews(TestCase):
         }
         resp = self.client.post("https://courtbot-python.herokuapp.com/schedule_reminders", data=data, follow=True)
 
-        self.assertIn(str.encode("Text reminder for case CF-2020-2803 occuring on 2020-07-21T09:00:00 was scheduled under 000-000-0000."), resp.content)
+        self.assertIn(str.encode("Text reminder for case CF-2020-3314 occuring on 2020-08-13T09:00:00 was scheduled under 000-000-0000."), resp.content)
 
