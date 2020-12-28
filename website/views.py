@@ -22,8 +22,8 @@ def index(request):
 def check_valid_case(case_num, year, county):
     # Process form data and requests arraignment data form api/case
     resp = requests.get(
-        #f"https://courtbot-python.herokuapp.com/api/case?year={year}&county={county}&case_num={case_num}"
-        f"http://127.0.0.1:8000/api/case?year={year}&county={county}&case_num={case_num}"
+        #f"http://127.0.0.1:8000/api/case?year={year}&county={county}&case_num={case_num}"
+        f"https://courtbot-python.herokuapp.com/api/case?year={year}&county={county}&case_num={case_num}"
     )
     resp_json = json.loads(resp.content)
     if resp_json.get('error', None):
@@ -32,8 +32,8 @@ def check_valid_case(case_num, year, county):
 
 
 def set_case_reminder(arraignment_datetime, case_num, phone_num):
-    #reminder_request = requests.post('https://courtbot-python.herokuapp.com/api/reminders', {
-    reminder_request = requests.post('http://127.0.0.1:8000/api/reminders', {
+    #reminder_request = requests.post('http://127.0.0.1:8000/api/reminders', {
+    reminder_request = requests.post('https://courtbot-python.herokuapp.com/api/reminders', {
         "arraignment_datetime": arraignment_datetime,
         "case_num": case_num,
         "phone_num": f"+1-{phone_num}"
