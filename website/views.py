@@ -49,7 +49,6 @@ def set_case_reminder(arraignment_datetime, case_num, phone_num):
 def schedule_reminders(request):
     # If valid case and arraignment time, posts reminder data to api/reminder
     # Includes option for extra phone number for additional recipient
-    #case_num = request.POST['case_num']
     case_num_list = [ 
             value for key, value in request.POST.items() 
             if key.find("case_num") > -1 and value
