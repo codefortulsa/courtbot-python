@@ -57,7 +57,7 @@ def schedule_reminders(request):
     county = request.POST['county']
     phone_num = request.POST['phone_num']
     add_num = request.POST.get('add_phone_num', None)
-    for case_num in case_num_list:
+    for i, case_num in enumerate(case_num_list):
         valid_case_message, arraignment_datetime = check_valid_case(case_num, year, county)
         if not arraignment_datetime:
             messages.error(request, valid_case_message)
@@ -69,7 +69,7 @@ def schedule_reminders(request):
             reminder_set, reminder_message = set_case_reminder(arraignment_datetime, case_num, phone_num)
             # messages.error(request, message)          
             messages.info(request, reminder_message)
-            if not reminder_set:
+            if len(case_num_list)-1 == i and not reminder_set:
                 return redirect('/#form')
             if add_num:
                 _, another_reminder_message = set_case_reminder(arraignment_datetime, case_num, add_num)
