@@ -14,6 +14,12 @@ from alerts.models import Alert
 class testReminders(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
+        class Event:
+            case_index
+            Docket 
+            Event
+            Party 
+            Reporter
 
     def _post(self, url, params):
         return self.factory.post(url, params)
@@ -98,7 +104,3 @@ class testReminders(TestCase):
                 'seminole', 'sequoyah', 'stephens', 'texas', 'tillman',
                 'tulsa', 'wagoner', 'washington', 'washita', 'woods',
                 'woodward']})
-
-    def testfindArraignmentOrReturnFalseEventNone(self):
-        events = [None, None, None]
-        
