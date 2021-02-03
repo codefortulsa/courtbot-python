@@ -3,7 +3,11 @@ import json
 
 from django.test import RequestFactory, TestCase
 
-from .views import reminders, eligible_jurisdiction
+from .views import (
+        reminders,
+        eligible_jurisdiction,
+        find_arraignment_or_return_False,
+    )
 from alerts.models import Alert
 
 
@@ -94,3 +98,7 @@ class testReminders(TestCase):
                 'seminole', 'sequoyah', 'stephens', 'texas', 'tillman',
                 'tulsa', 'wagoner', 'washington', 'washita', 'woods',
                 'woodward']})
+
+    def testfindArraignmentOrReturnFalseEventNone(self):
+        events = [None, None, None]
+        

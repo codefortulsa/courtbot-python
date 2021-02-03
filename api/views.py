@@ -107,7 +107,9 @@ def eligible_jurisdiction(request):
 
 def find_arraignment_or_return_False(events):
     for event in events:
-        if "arraignment" in event.Docket.lower():
+        if not event:
+            return False
+        if "arraignment" in event.Event.lower():
             return event
     return False
 
