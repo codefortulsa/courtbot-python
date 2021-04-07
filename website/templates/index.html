@@ -94,10 +94,44 @@
 				<input type="tel" class="form-control" id="add_phone_num" name="add_phone_num" placeholder="Enter Phone Number"
 				pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
 			</div>
-			<button type="submit" class="btn btn-primary">Submit</button>
+			<button id="add-case-btn" type="button" onclick="newCaseNumberGenerator()" class="btn btn-primary">Add Case Number</button>
+			<button  type="submit" class="btn btn-primary">Submit</button>
 		</form>
 	</div>
 </section>
+<script>
+	let index = 1
+	let newCaseNumberGenerator = () => {
+
+		let addCaseNum = "add_case_num_" + index.toString()
+
+		let caseForm = document.getElementById('case-form')
+		let addCaseBtn = document.getElementById("add-case-btn")
+
+		let additionalCaseNumLabel = document.createElement("label"); 
+		additionalCaseNumLabel.setAttribute('for', addCaseNum);
+		additionalCaseNumLabel.innerHTML = "Additional Case Number " + index.toString() ;
+
+		let additionalCaseNumSmall = document.createElement("small"); 
+		additionalCaseNumSmall.innerHTML = "(ex: CF-1234-5678)" ;
+		additionalCaseNumLabel.appendChild(additionalCaseNumSmall)
+
+		let additionalCaseNumField = document.createElement("input"); 
+		additionalCaseNumField.setAttribute('type',"text");
+		additionalCaseNumField.setAttribute('name', addCaseNum);
+		additionalCaseNumField.setAttribute('id', addCaseNum);
+		additionalCaseNumField.setAttribute('class', "form-control");
+		additionalCaseNumField.setAttribute('placeholder', "Enter case number");
+
+		let additionalCaseNumDiv = document.createElement("div"); 
+		additionalCaseNumDiv.setAttribute('class',"form-group");
+		additionalCaseNumDiv.appendChild(additionalCaseNumLabel)
+		additionalCaseNumDiv.appendChild(additionalCaseNumField)
+		
+		index += 1
+		caseForm.insertBefore(additionalCaseNumDiv, addCaseBtn)
+	}
+</script>
 <!--FAQs-->
 <section id="faq" class="CBLtBgClr">
 	<div class="container">
