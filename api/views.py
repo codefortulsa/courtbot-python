@@ -13,11 +13,18 @@ from alerts.models import Alert
 
 @csrf_exempt
 def case(request):
+    year_regex = re.compile(r'^[0-9]{4}$')
+    this_year = datetime.today().year
+    
     if request.method == 'GET':
         year = request.GET.get('year', 'NOT PROVIDED')
         county = request.GET.get('county', 'NOT PROVIDED')
         case_num = request.GET.get('case_num', 'NOT PROVIDED')
 
+        if not year_regex.match(year) or int(year) > this_year or int(year) < 1900:
+            err_msg = (
+                f'invalid year: {year}')
+            return JsonResponse({'error': err_msg})
         try:
             case = oscn.request.Case(year=year, county=county, number=case_num)
         except Exception as exc:
@@ -107,7 +114,9 @@ def eligible_jurisdiction(request):
 
 def find_arraignment_or_return_False(events):
     for event in events:
-        if "arraignment" in event.Docket.lower():
+        if not "Event" in dir(event):
+            continue
+        if "arraignment" in event.Event.lower():
             return event
     return False
 

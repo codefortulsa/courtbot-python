@@ -3,13 +3,23 @@ import json
 
 from django.test import RequestFactory, TestCase
 
-from .views import reminders, eligible_jurisdiction
+from .views import (
+        reminders,
+        eligible_jurisdiction,
+        find_arraignment_or_return_False,
+    )
 from alerts.models import Alert
 
 
 class testReminders(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
+        class Event:
+            case_index
+            Docket 
+            Event
+            Party 
+            Reporter
 
     def _post(self, url, params):
         return self.factory.post(url, params)
