@@ -1,4 +1,4 @@
-Django==2.2.18
+Django==2.2.20
 gunicorn==19.9.0
 oscn==0.0.0.32
 python-decouple==3.1
