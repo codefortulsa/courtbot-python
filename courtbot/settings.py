@@ -27,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = config('SECRET_KEY', default='unsafe-secret-key-for-dev')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DJANGO_DEBUG', default=False)
+DEBUG = config('DJANGO_DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = [
     config('DJANGO_ALLOWED_HOSTS', default="127.0.0.1")
