@@ -8,11 +8,15 @@ For instructions on how to set up and test this bot, as well as additional sampl
 visit the Lex Getting Started documentation http://docs.aws.amazon.com/lex/latest/dg/getting-started.html.
 
 20190604 : seyeon : Initial validations for year, county, and case number
+20190713 : seyeon : Added GET call to courtbot-python herokuapp
 """
+import datetime
 import dateutil.parser
+import json
 import logging
 import os
-import requests
+import re
+import urllib.request
 import time
 
 
@@ -39,6 +43,16 @@ def elicit_slot(session_attributes, intent_name, slots, slot_to_elicit, message)
         }
     }
 
+def confirm_slot(session_attributes, intent_name, slots, message):
+    return {
+        'sessionAttributes': session_attributes,
+        'dialogAction': {
+            'type': 'ConfirmIntent',
+            'intentName': intent_name,
+            'slots': slots,
+            'message': message
+        }
+    }
 
 def close(session_attributes, fulfillment_state, message):
     response = {
@@ -95,7 +109,7 @@ def isvalid_date(date):
         return False
 
 def validate_eligible_county(county):
-    counties = ['Tulsa', 'Rogers', 'Muskogee']
+    counties = ['Tulsa', 'Rogers', 'Muskogee', 'Wagoner']
     normalized_counties = []
     for eligible_county in counties:
         normalized_counties.append(eligible_county.lower())
@@ -110,7 +124,7 @@ def validate_eligible_county(county):
 
 def validate_year(year):
     message = None
-    year_range = 5
+    year_range = 15
     valid_year = 0
     try:
         valid_year = int(year)
@@ -130,24 +144,77 @@ def validate_year(year):
         return False, 'Year', message
     return True, None, message
 
-def validate_case_number(county, year, case_number):
+def validate_case_number(county, year, case_number, intent_request):
+    regex = '\w{2,}-\w{4}-\w{1,}$'
+    if not re.match(regex, case_number):
+        message = 'Please enter the case number formatted like CF-2019-1234'
+        return False, 'CaseID', message
+
     # call the endpoint for validating case number
     courtbot_url = (f'http://courtbot-python.herokuapp.com/api/case?'
         f'county={county}&year={year}&case_num={case_number}')
-    response = requests.get(url=courtbot_url)
-    case_info = response.json()
+    # response = requests.get(url=courtbot_url)
+    response = urllib.request.urlopen(courtbot_url)
+    case_info = json.load(response)
     message = None
-    if case in case_info:
-        event_date = case_info['case'].get('arraignment_date')
+    if 'arraignment_datetime' in case_info:
+        event_date = case_info.get('arraignment_datetime')
+        output_session_attributes = intent_request['sessionAttributes'] if intent_request['sessionAttributes'] is not None else {}
+        output_session_attributes['event_date'] = event_date
+        output_session_attributes['case_id'] = case_number
         event_date = datetime.datetime.strptime(
             event_date, '%Y-%m-%dT%H:%M:%S')
-        message = f'You have an event coming up at {event_date}'
+        message = f'You have an event coming up at {event_date}. Would you like to set a reminder?'
     else:
         message = case_info.get('error')
+        return False, 'CaseID', message
     return True, None, message
 
+def validate_reminder(reminder, intent_request):
+    bool_reminder = None
+    message = ''
+    output_session_attributes = intent_request['sessionAttributes'] if intent_request['sessionAttributes'] is not None else {}
+    if reminder.lower() in ['y', 'yes']:
+        bool_reminder = True
+    elif reminder.lower() in ['n', 'no']:
+        bool_reminder = False
+    else:
+        message = 'Please enter "y" or "yes" to setup a reminder.'
+        return False, 'Reminder', message
+    return True, None, message
 
-def validate_case_info(county, year, case_number):
+def validate_phone_num(phone_num, intent_request):
+    num_list = phone_num.split('-')
+    num_str = '1' + ''.join(num_list)
+    if len(num_str) != 11:
+        message = 'Please enter a phone number formatted like 516-111-2222'
+        return False, 'PhoneNumber', message
+
+    output_session_attributes = intent_request['sessionAttributes'] if intent_request['sessionAttributes'] is not None else {}
+    case_id = output_session_attributes['case_id']
+    event_date = output_session_attributes['event_date']
+    courtbot_url = f'http://courtbot-python.herokuapp.com/api/reminders'
+    reminder_data = (f'case_num={case_id}&phone_num={phone_num}&'
+                     f'arraignment_datetime={event_date}'
+                    ).encode(encoding='UTF-8')
+    response = urllib.request.urlopen(courtbot_url, data=reminder_data)
+    reminder_info = json.load(response)
+    if 'week_before_datetime' in reminder_info:
+        week_before_datetime = reminder_info.get('week_before_datetime')
+        day_before_datetime = reminder_info.get('day_before_datetime')
+        output_session_attributes['week_before_datetime'] = week_before_datetime
+        output_session_attributes['day_before_datetime'] = day_before_datetime
+        output_session_attributes['confirm_reminder'] = True
+        output_session_attributes['phone_num'] = num_str
+        message = (
+            f'We will send you a reminder text on {week_before_datetime} '
+            f'and {week_before_datetime}.')
+        return True, None, message
+    message = 'Something was wrong while setting up the reminder.'
+    return False, 'PhoneNumber', message
+
+def validate_case_info(
+        county, year, case_number, reminder, phone_num, intent_request):
     is_valid, slot, message = validate_eligible_county(county)
     if not is_valid:
         return build_validation_result(is_valid, slot, message)
@@ -159,11 +226,21 @@ def validate_case_info(county, year, case_number):
 
     if case_number is not None:
         is_valid, slot, message = validate_case_number(
-            county, year, case_number)
+            county, year, case_number, intent_request)
+        if not is_valid:
+            return build_validation_result(is_valid, slot, message)
+        # return build_validation_result(is_valid, slot, message)
+
+    if reminder is not None:
+        is_valid, slot, message = validate_reminder(reminder, intent_request)
         if not is_valid:
             return build_validation_result(is_valid, slot, message)
 
-    return build_validation_result(True, None, None)
+    if phone_num is not None:
+        is_valid, slot, message = validate_phone_num(phone_num, intent_request)
+        if not is_valid:
+            return build_validation_result(is_valid, slot, message)
+    return build_validation_result(True, None, message)
 
 
 """ --- Functions that control the bot's behavior --- """
@@ -179,6 +256,8 @@ def get_case_info(intent_request):
     county = get_slots(intent_request)["County"]
     year = get_slots(intent_request)["Year"]
     case_number = get_slots(intent_request)["CaseID"]
+    reminder = get_slots(intent_request)["Reminder"]
+    phone_number = get_slots(intent_request)["PhoneNumber"]
     source = intent_request['invocationSource']
 
     if source == 'DialogCodeHook':
@@ -186,7 +265,8 @@ def get_case_info(intent_request):
         # Use the elicitSlot dialog action to re-prompt for the first violation detected.
         slots = get_slots(intent_request)
 
-        validation_result = validate_case_info(county, year, case_number)
+        validation_result = validate_case_info(
+            county, year, case_number, reminder, phone_number, intent_request)
         if not validation_result['isValid']:
             slots[validation_result['violatedSlot']] = None
             return elicit_slot(intent_request['sessionAttributes'],
@@ -198,16 +278,16 @@ def get_case_info(intent_request):
         # Pass the price of the flowers back through session attributes to be used in various prompts defined
         # on the bot model.
         output_session_attributes = intent_request['sessionAttributes'] if intent_request['sessionAttributes'] is not None else {}
-        if case_number is not None:
-            output_session_attributes['CaseID'] = case_number
-
         return delegate(output_session_attributes, get_slots(intent_request))
 
-    # Order the flowers, and rely on the goodbye message of the bot to define the message to the end user.
-    # In a real bot, this would likely involve a call to a backend service.
-    success_message = ('Thank you for using Courtbot. '
-                       'For any comments or concerns contact us at '
-                       'https://www.okcourtbot.com/#faq')
+    output_session_attributes = intent_request['sessionAttributes'] if intent_request['sessionAttributes'] is not None else {}
+    week_before_datetime = output_session_attributes['week_before_datetime']
+    day_before_datetime = output_session_attributes['day_before_datetime']
+    phone_num = output_session_attributes.get('phone_num', 'NO NUMBER FOUND')
+    success_message = (f'You will get a text on {week_before_datetime} and {day_before_datetime} on the number {phone_num}. '
+                        'Thank you for using Courtbot. '
+                        'For any comments or concerns contact us at '
+                        'https://www.okcourtbot.com/#faq')
     return close(intent_request['sessionAttributes'],
                  'Fulfilled',
                  {'contentType': 'PlainText', 'content': success_message})
