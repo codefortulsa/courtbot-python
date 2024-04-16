@@ -1,5 +1,5 @@
 Django==2.2.24
-gunicorn==19.9.0
+gunicorn==22.0.0
 oscn==0.0.0.32
 python-decouple==3.1
 twilio==6.24.0
